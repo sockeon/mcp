@@ -48,9 +48,16 @@ The server should start without errors. Press `Ctrl+C` to stop it.
 
 ### MCP Client Configuration
 
-To use this MCP server with an MCP client (like Claude Desktop), add it to your MCP configuration file:
+Configure the Sockeon MCP server for your preferred client:
 
-**For Claude Desktop** (`~/Library/Application Support/Claude/claude_desktop_config.json` on macOS, or `%APPDATA%\Claude\claude_desktop_config.json` on Windows):
+#### Claude Desktop
+
+1. **Locate the configuration file:**
+   - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
+   - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
+   - **Linux**: `~/.config/Claude/claude_desktop_config.json`
+
+2. **Open or create the file** and add the Sockeon MCP server:
 
 ```json
 {
@@ -63,14 +70,86 @@ To use this MCP server with an MCP client (like Claude Desktop), add it to your 
 }
 ```
 
-**For other MCP clients**, refer to their documentation for configuration format.
+3. **Replace the path** with the absolute path to your `server.php` file.
 
-### Environment Variables
+4. **Restart Claude Desktop** to apply the changes.
 
-The server supports the following environment variables:
+**Example paths:**
+- macOS: `"/Users/username/Projects/sockeon/framework/mcp/public/server.php"`
+- Windows: `"C:\\Users\\username\\Projects\\sockeon\\framework\\mcp\\public\\server.php"`
+- Linux: `"/home/username/Projects/sockeon/framework/mcp/public/server.php"`
 
-- `DEBUG=true` - Enable debug logging (default: false)
-- `FILE_LOG=true` - Log to file instead of stderr (default: false)
+#### Cursor
+
+1. **Open Cursor Settings:**
+   - Press `Cmd+,` (macOS) or `Ctrl+,` (Windows/Linux)
+   - Or go to `File` > `Preferences` > `Settings`
+
+2. **Search for "MCP"** or navigate to `Features` > `Model Context Protocol`
+
+3. **Add MCP Server Configuration:**
+   - Click `Edit Config` or manually edit the MCP configuration file
+   - The configuration file is typically located at:
+     - **macOS**: `~/Library/Application Support/Cursor/User/globalStorage/mcp.json`
+     - **Windows**: `%APPDATA%\Cursor\User\globalStorage\mcp.json`
+     - **Linux**: `~/.config/Cursor/User/globalStorage/mcp.json`
+
+4. **Add the Sockeon server configuration:**
+
+```json
+{
+  "mcpServers": {
+    "sockeon": {
+      "command": "php",
+      "args": ["/absolute/path/to/sockeon/framework/mcp/public/server.php"]
+    }
+  }
+}
+```
+
+5. **Replace the path** with the absolute path to your `server.php` file.
+
+6. **Restart Cursor** to apply the changes.
+
+#### Visual Studio Code
+
+1. **Install the MCP Extension:**
+   - Open VS Code Extensions (`Cmd+Shift+X` or `Ctrl+Shift+X`)
+   - Search for "Model Context Protocol" or "MCP"
+   - Install the official MCP extension
+
+2. **Configure MCP Server:**
+   - Open VS Code Settings (`Cmd+,` or `Ctrl+,`)
+   - Search for "MCP" settings
+   - Or create/edit `.vscode/settings.json` in your workspace:
+
+```json
+{
+  "mcp.servers": {
+    "sockeon": {
+      "command": "php",
+      "args": ["${workspaceFolder}/mcp/public/server.php"]
+    }
+  }
+}
+```
+
+3. **For global configuration**, add to your User Settings:
+
+```json
+{
+  "mcp.servers": {
+    "sockeon": {
+      "command": "php",
+      "args": ["/absolute/path/to/sockeon/framework/mcp/public/server.php"]
+    }
+  }
+}
+```
+
+4. **Reload VS Code** to apply the changes.
+
+**Note:** If using a workspace-relative path, `${workspaceFolder}` will be replaced with your workspace root. For global settings, use an absolute path.
 
 ## Usage
 
