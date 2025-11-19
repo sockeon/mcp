@@ -5,6 +5,7 @@ namespace Sockeon\Mcp;
 use Mcp\Capability\Attribute\McpResource;
 use Mcp\Capability\Attribute\McpResourceTemplate;
 use Mcp\Exception\ResourceReadException;
+use Sockeon\Mcp\Helpers\StubLoader;
 
 final class SockeonResources
 {

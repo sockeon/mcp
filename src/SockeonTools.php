@@ -12,6 +12,7 @@
 namespace Sockeon\Mcp;
 
 use Mcp\Capability\Attribute\McpTool;
+use Sockeon\Mcp\Helpers\StubLoader;
 
 final class SockeonTools
 {
