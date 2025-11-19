@@ -1,14 +1,11 @@
 use Sockeon\Sockeon\Validation\Validator;
-use Sockeon\Sockeon\Validation\Rules\Required;
-use Sockeon\Sockeon\Validation\Rules\StringRule;
-use Sockeon\Sockeon\Validation\Rules\EmailRule;
 
 #[SocketOn('user.register')]
 public function handleUserRegister(int $clientId, array $data): void
 {
     $validator = new Validator($data, [
-        'name' => [new Required(), new StringRule()],
-        'email' => [new Required(), new EmailRule()],
+        'name' => ['required','string'],
+        'email' => ['required', 'email'],
     ]);
 
     if (!$validator->validate()) {

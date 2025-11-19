@@ -17,13 +17,6 @@ $config = new ServerConfig([
 $server = new Server($config);
 {{CONTROLLER_REGISTRATION}}
 
-$host = $config->getHost();
-$port = $config->getPort();
-
-echo "Starting Sockeon server on {$host}:{$port}\n";
-echo "WebSocket endpoint: ws://{$host}:{$port}\n";
-echo "HTTP API: http://{$host}:{$port}\n";
-
 // Start the server
 $server->run();
 
