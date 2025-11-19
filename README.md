@@ -64,7 +64,7 @@ Configure the Sockeon MCP server for your preferred client:
   "mcpServers": {
     "sockeon": {
       "command": "php",
-      "args": ["/absolute/path/to/sockeon/framework/mcp/public/server.php"]
+      "args": ["/absolute/path/to/mcp/public/server.php"]
     }
   }
 }
@@ -75,9 +75,9 @@ Configure the Sockeon MCP server for your preferred client:
 4. **Restart Claude Desktop** to apply the changes.
 
 **Example paths:**
-- macOS: `"/Users/username/Projects/sockeon/framework/mcp/public/server.php"`
-- Windows: `"C:\\Users\\username\\Projects\\sockeon\\framework\\mcp\\public\\server.php"`
-- Linux: `"/home/username/Projects/sockeon/framework/mcp/public/server.php"`
+- macOS: `"/Users/username/Projects/mcp/public/server.php"`
+- Windows: `"C:\\Users\\username\\Projects\\mcp\\public\\server.php"`
+- Linux: `"/home/username/Projects/mcp/public/server.php"`
 
 #### Cursor
 
@@ -101,7 +101,7 @@ Configure the Sockeon MCP server for your preferred client:
   "mcpServers": {
     "sockeon": {
       "command": "php",
-      "args": ["/absolute/path/to/sockeon/framework/mcp/public/server.php"]
+      "args": ["/absolute/path/to/mcp/public/server.php"]
     }
   }
 }
@@ -141,7 +141,7 @@ Configure the Sockeon MCP server for your preferred client:
   "mcp.servers": {
     "sockeon": {
       "command": "php",
-      "args": ["/absolute/path/to/sockeon/framework/mcp/public/server.php"]
+      "args": ["/absolute/path/to/mcp/public/server.php"]
     }
   }
 }
