@@ -1,0 +1,36 @@
+
+    /**
+     * Handle new WebSocket connections
+     */
+    #[OnConnect]
+    public function onConnect(int $clientId): void
+    {
+        // Welcome the new user
+        $this->emit($clientId, 'welcome', [
+            'message' => 'Welcome to the server!',
+            'clientId' => $clientId
+        ]);
+    }
+
+    /**
+     * Handle WebSocket disconnections
+     */
+    #[OnDisconnect]
+    public function onDisconnect(int $clientId): void
+    {
+        // Handle disconnection logic
+    }
+
+    /**
+     * Handle custom WebSocket event
+     */
+    #[SocketOn('example.event')]
+    public function handleExampleEvent(int $clientId, array $data): void
+    {
+        // Broadcast to all clients
+        $this->broadcast('example.event', [
+            'clientId' => $clientId,
+            'data' => $data
+        ]);
+    }
+

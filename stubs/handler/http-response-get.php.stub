@@ -1,0 +1,6 @@
+
+        return Response::json([
+            'success' => true,
+            'data' => []
+        ]);
+

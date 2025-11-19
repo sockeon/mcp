@@ -1,0 +1,6 @@
+        // Broadcast to specific room
+        $room = $data['room'] ?? '{{ROOM_NAME}}';
+        $this->broadcastToRoomClients('{{EVENT_NAME}}', [
+            'data' => $data
+        ], $room);
+

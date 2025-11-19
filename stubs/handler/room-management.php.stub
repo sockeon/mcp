@@ -1,0 +1,54 @@
+    #[SocketOn('{{PREFIX}}.join')]
+    public function handleRoomJoin(int $clientId, array $data): void
+    {
+        $room = $data['room'] ?? 'general';
+        $namespace = $data['namespace'] ?? '/';
+        
+        $this->joinRoom($clientId, $room, $namespace);
+        
+        $this->emit($clientId, '{{PREFIX}}.joined', [
+            'room' => $room,
+            'namespace' => $namespace,
+            'message' => "You joined room: {$room}"
+        ]);
+        
+        // Notify others in the room
+        $this->broadcastToRoomClients('{{PREFIX}}.user.joined', [
+            'clientId' => $clientId,
+            'room' => $room
+        ], $room, $namespace);
+    }
+
+    #[SocketOn('{{PREFIX}}.leave')]
+    public function handleRoomLeave(int $clientId, array $data): void
+    {
+        $room = $data['room'] ?? 'general';
+        $namespace = $data['namespace'] ?? '/';
+        
+        $this->leaveRoom($clientId, $room, $namespace);
+        
+        $this->emit($clientId, '{{PREFIX}}.left', [
+            'room' => $room,
+            'namespace' => $namespace,
+            'message' => "You left room: {$room}"
+        ]);
+        
+        // Notify others in the room
+        $this->broadcastToRoomClients('{{PREFIX}}.user.left', [
+            'clientId' => $clientId,
+            'room' => $room
+        ], $room, $namespace);
+    }
+
+    #[SocketOn('{{PREFIX}}.list')]
+    public function handleRoomList(int $clientId, array $data): void
+    {
+        $namespace = $data['namespace'] ?? '/';
+        $rooms = $this->getRooms($namespace);
+        
+        $this->emit($clientId, '{{PREFIX}}.list', [
+            'namespace' => $namespace,
+            'rooms' => $rooms
+        ]);
+    }
+

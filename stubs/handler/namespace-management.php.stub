@@ -1,0 +1,39 @@
+    #[SocketOn('namespace.join')]
+    public function handleNamespaceJoin(int $clientId, array $data): void
+    {
+        $namespace = $data['namespace'] ?? '/';
+        
+        $this->moveClientToNamespace($clientId, $namespace);
+        
+        $this->emit($clientId, 'namespace.joined', [
+            'namespace' => $namespace,
+            'message' => "You joined namespace: {$namespace}"
+        ]);
+    }
+
+    #[HttpRoute('GET', '/api/namespaces/{namespace}/clients')]
+    public function getNamespaceClients(Request $request): Response
+    {
+        $namespace = $request->getParam('namespace');
+        $clients = $this->getClientsInNamespace($namespace);
+        
+        return Response::json([
+            'namespace' => $namespace,
+            'count' => count($clients),
+            'clients' => $clients
+        ]);
+    }
+
+    #[HttpRoute('GET', '/api/namespaces/{namespace}/rooms')]
+    public function getNamespaceRooms(Request $request): Response
+    {
+        $namespace = $request->getParam('namespace');
+        $rooms = $this->getRooms($namespace);
+        
+        return Response::json([
+            'namespace' => $namespace,
+            'count' => count($rooms),
+            'rooms' => $rooms
+        ]);
+    }
+

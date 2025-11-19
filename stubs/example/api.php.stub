@@ -1,0 +1,69 @@
+<?php
+
+namespace App\Controllers;
+
+use Sockeon\Sockeon\Controllers\SocketController;
+use Sockeon\Sockeon\Http\Attributes\HttpRoute;
+use Sockeon\Sockeon\Http\Request;
+use Sockeon\Sockeon\Http\Response;
+
+class ApiController extends SocketController
+{
+    #[HttpRoute('GET', '/api/users')]
+    public function getUsers(Request $request): Response
+    {
+        $limit = $request->getQuery('limit', 10);
+        $offset = $request->getQuery('offset', 0);
+        
+        // Fetch users logic here
+        $users = [];
+        
+        return Response::json([
+            'users' => $users,
+            'pagination' => [
+                'limit' => $limit,
+                'offset' => $offset
+            ]
+        ]);
+    }
+
+    #[HttpRoute('GET', '/api/users/{id}')]
+    public function getUser(Request $request): Response
+    {
+        $userId = $request->getParam('id');
+        
+        // Fetch user logic here
+        $user = null;
+        
+        if (!$user) {
+            return Response::json(['error' => 'User not found'], 404);
+        }
+        
+        return Response::json($user);
+    }
+
+    #[HttpRoute('POST', '/api/users')]
+    public function createUser(Request $request): Response
+    {
+        $data = $request->all();
+        
+        // Create user logic here
+        
+        return Response::json(['success' => true, 'user' => $data], 201);
+    }
+
+    #[HttpRoute('POST', '/api/broadcast')]
+    public function broadcastMessage(Request $request): Response
+    {
+        $data = $request->all();
+        
+        if (!isset($data['event']) || !isset($data['data'])) {
+            return Response::json(['error' => 'Missing required fields'], 400);
+        }
+
+        $this->broadcast($data['event'], $data['data']);
+
+        return Response::json(['success' => true]);
+    }
+}
+

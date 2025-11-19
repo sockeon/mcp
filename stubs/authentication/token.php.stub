@@ -1,0 +1,36 @@
+<?php
+
+namespace {{NAMESPACE}};
+
+use Sockeon\Sockeon\Contracts\Http\HttpMiddleware;
+use Sockeon\Sockeon\Http\Request;
+use Sockeon\Sockeon\Http\Response;
+
+class {{MIDDLEWARE_NAME}} implements HttpMiddleware
+{
+    public function handle(Request $request, callable $next, \Sockeon\Sockeon\Connection\Server $server)
+    {
+        $token = $request->getHeader('Authorization');
+        
+        if (!$token || !$this->validateToken($token)) {
+            return Response::json(['error' => 'Unauthorized'], 401);
+        }
+
+        return $next();
+    }
+
+    private function validateToken(string $token): bool
+    {
+        // Implement your token validation logic
+        // Remove 'Bearer ' prefix if present
+        $token = str_replace('Bearer ', '', $token);
+        
+        // Validate token (example: JWT validation, database check, etc.)
+        return !empty($token);
+    }
+}
+
+// Usage:
+// $server->getMiddleware()->addHttpMiddleware({{MIDDLEWARE_NAME}}::class);
+// Or in route: #[HttpRoute('GET', '/api/protected', middlewares: [{{MIDDLEWARE_NAME}}::class])]
+

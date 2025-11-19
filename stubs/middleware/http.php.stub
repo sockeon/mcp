@@ -1,0 +1,18 @@
+<?php
+
+namespace {{NAMESPACE}};
+
+use Sockeon\Sockeon\Contracts\Http\HttpMiddleware;
+use Sockeon\Sockeon\Http\Request;
+
+class {{MIDDLEWARE_NAME}} implements HttpMiddleware
+{
+    public function handle(Request $request, callable $next, \Sockeon\Sockeon\Connection\Server $server)
+    {
+        // Add your middleware logic here
+        
+        // Call next middleware
+        return $next();
+    }
+}
+

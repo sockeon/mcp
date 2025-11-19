@@ -1,0 +1,36 @@
+<?php
+
+namespace {{NAMESPACE}};
+
+use Sockeon\Sockeon\Contracts\WebSocket\HandshakeMiddleware;
+use Sockeon\Sockeon\WebSocket\HandshakeRequest;
+
+class {{MIDDLEWARE_NAME}} implements HandshakeMiddleware
+{
+    private string $authKey;
+
+    public function __construct(string $authKey)
+    {
+        $this->authKey = $authKey;
+    }
+
+    public function handle(int $clientId, HandshakeRequest $request, callable $next, \Sockeon\Sockeon\Connection\Server $server): bool|array
+    {
+        $queryParams = $request->getQueryParams();
+        $providedKey = $queryParams['key'] ?? null;
+
+        if ($providedKey !== $this->authKey) {
+            return [
+                'error' => 'Authentication failed',
+                'code' => 401
+            ];
+        }
+
+        return $next();
+    }
+}
+
+// Usage in server:
+// $server->getMiddleware()->addHandshakeMiddleware({{MIDDLEWARE_NAME}}::class);
+// ServerConfig: ['auth_key' => 'your-secret-key']
+

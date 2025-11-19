@@ -1,0 +1,45 @@
+    #[SocketOn('error')]
+    public function handleError(int $clientId, array $data): void
+    {
+        $error = $data['error'] ?? 'Unknown error';
+        $code = $data['code'] ?? 500;
+        
+        // Log the error
+        $this->getLogger()->error("Client {$clientId} error: {$error}", [
+            'clientId' => $clientId,
+            'error' => $error,
+            'code' => $code,
+            'data' => $data
+        ]);
+        
+        // Send error response
+        $this->emit($clientId, 'error.response', [
+            'error' => $error,
+            'code' => $code,
+            'timestamp' => time()
+        ]);
+    }
+
+    // In HTTP routes, use try-catch:
+    #[HttpRoute('POST', '/api/action')]
+    public function handleAction(Request $request): Response
+    {
+        try {
+            $data = $request->all();
+            
+            // Your logic here
+            
+            return Response::json(['success' => true]);
+        } catch (\Exception $e) {
+            $this->getLogger()->error("Action failed: " . $e->getMessage(), [
+                'exception' => $e,
+                'trace' => $e->getTraceAsString()
+            ]);
+            
+            return Response::json([
+                'error' => $e->getMessage(),
+                'code' => 500
+            ], 500);
+        }
+    }
+

@@ -1,0 +1,74 @@
+<?php
+
+namespace App\Controllers;
+
+use Sockeon\Sockeon\Controllers\SocketController;
+use Sockeon\Sockeon\WebSocket\Attributes\OnConnect;
+use Sockeon\Sockeon\WebSocket\Attributes\OnDisconnect;
+use Sockeon\Sockeon\WebSocket\Attributes\SocketOn;
+
+class GameController extends SocketController
+{
+    #[OnConnect]
+    public function onConnect(int $clientId): void
+    {
+        $this->moveClientToNamespace($clientId, '/game');
+        $this->joinRoom($clientId, 'lobby', '/game');
+        
+        $this->emit($clientId, 'game.status', [
+            'location' => 'lobby',
+            'namespace' => '/game'
+        ]);
+    }
+
+    #[SocketOn('game.create')]
+    public function createGame(int $clientId, array $data): void
+    {
+        $gameId = uniqid('game_');
+        
+        $this->leaveRoom($clientId, 'lobby', '/game');
+        $this->joinRoom($clientId, $gameId, '/game');
+        
+        $this->emit($clientId, 'game.created', [
+            'gameId' => $gameId,
+            'role' => 'host'
+        ]);
+        
+        $this->broadcastToRoomClients('game.available', [
+            'gameId' => $gameId,
+            'host' => $clientId
+        ], 'lobby', '/game');
+    }
+
+    #[SocketOn('game.join')]
+    public function joinGame(int $clientId, array $data): void
+    {
+        $gameId = $data['gameId'] ?? null;
+        
+        if (!$gameId) {
+            $this->emit($clientId, 'error', ['message' => 'Game ID required']);
+            return;
+        }
+
+        $this->leaveRoom($clientId, 'lobby', '/game');
+        $this->joinRoom($clientId, $gameId, '/game');
+        
+        $this->broadcastToRoomClients('player.joined', [
+            'playerId' => $clientId
+        ], $gameId, '/game');
+        
+        $this->emit($clientId, 'game.joined', [
+            'gameId' => $gameId,
+            'role' => 'player'
+        ]);
+    }
+
+    #[OnDisconnect]
+    public function onDisconnect(int $clientId): void
+    {
+        $this->broadcast('player.disconnected', [
+            'playerId' => $clientId
+        ], '/game');
+    }
+}
+

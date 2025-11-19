@@ -1,0 +1,34 @@
+
+    /**
+     * HTTP endpoint example
+     */
+    #[HttpRoute('GET', '/api/status')]
+    public function getStatus(Request $request): Response
+    {
+        return Response::json([
+            'status' => 'online',
+            'clients' => $this->getClientCount(),
+            'timestamp' => time()
+        ]);
+    }
+
+    /**
+     * HTTP POST endpoint example
+     */
+    #[HttpRoute('POST', '/api/broadcast')]
+    public function broadcastMessage(Request $request): Response
+    {
+        $data = $request->all();
+        
+        if (!isset($data['message'])) {
+            return Response::json(['error' => 'Message is required'], 400);
+        }
+
+        $this->broadcast('api.message', [
+            'message' => $data['message'],
+            'timestamp' => time()
+        ]);
+
+        return Response::json(['success' => true]);
+    }
+

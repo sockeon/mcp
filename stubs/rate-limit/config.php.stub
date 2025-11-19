@@ -1,0 +1,11 @@
+<?php
+
+use Sockeon\Sockeon\Config\RateLimitConfig;
+
+$rateLimitConfig = new RateLimitConfig({{CONFIG_ARRAY}});
+
+// Use in ServerConfig:
+// $config = new ServerConfig([
+//     'rate_limit' => $rateLimitConfig
+// ]);
+

@@ -1,0 +1,11 @@
+<?php
+
+namespace {{NAMESPACE}};
+
+{{IMPORTS}}
+
+class {{CONTROLLER_NAME}} extends SocketController
+{
+{{WEBSOCKET_METHODS}}{{HTTP_METHODS}}{{ROOM_METHODS}}
+}
+

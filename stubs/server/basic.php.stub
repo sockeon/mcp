@@ -1,0 +1,29 @@
+<?php
+
+require_once 'vendor/autoload.php';
+
+use Sockeon\Sockeon\Config\ServerConfig;
+use Sockeon\Sockeon\Connection\Server;
+{{CONTROLLER_USE}}
+
+// Create server configuration
+$config = new ServerConfig([
+    'host' => '{{HOST}}',
+    'port' => {{PORT}},
+    'debug' => {{DEBUG}}{{CORS_CONFIG}}
+]);
+
+// Create and configure the server
+$server = new Server($config);
+{{CONTROLLER_REGISTRATION}}
+
+$host = $config->getHost();
+$port = $config->getPort();
+
+echo "Starting Sockeon server on {$host}:{$port}\n";
+echo "WebSocket endpoint: ws://{$host}:{$port}\n";
+echo "HTTP API: http://{$host}:{$port}\n";
+
+// Start the server
+$server->run();
+

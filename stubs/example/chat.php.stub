@@ -1,0 +1,75 @@
+<?php
+
+namespace App\Controllers;
+
+use Sockeon\Sockeon\Controllers\SocketController;
+use Sockeon\Sockeon\Http\Attributes\HttpRoute;
+use Sockeon\Sockeon\Http\Request;
+use Sockeon\Sockeon\Http\Response;
+use Sockeon\Sockeon\WebSocket\Attributes\OnConnect;
+use Sockeon\Sockeon\WebSocket\Attributes\OnDisconnect;
+use Sockeon\Sockeon\WebSocket\Attributes\SocketOn;
+
+class ChatController extends SocketController
+{
+    #[OnConnect]
+    public function onConnect(int $clientId): void
+    {
+        $this->emit($clientId, 'welcome', [
+            'message' => 'Welcome to the chat!',
+            'clientId' => $clientId
+        ]);
+
+        $this->broadcast('user.joined', [
+            'clientId' => $clientId,
+            'message' => "User {$clientId} joined the chat"
+        ]);
+    }
+
+    #[OnDisconnect]
+    public function onDisconnect(int $clientId): void
+    {
+        $this->broadcast('user.left', [
+            'clientId' => $clientId,
+            'message' => "User {$clientId} left the chat"
+        ]);
+    }
+
+    #[SocketOn('chat.message')]
+    public function handleChatMessage(int $clientId, array $data): void
+    {
+        if (empty($data['message'])) {
+            $this->emit($clientId, 'error', ['message' => 'Message cannot be empty']);
+            return;
+        }
+
+        $this->broadcast('chat.message', [
+            'clientId' => $clientId,
+            'message' => $data['message'],
+            'timestamp' => time()
+        ]);
+    }
+
+    #[SocketOn('room.join')]
+    public function handleRoomJoin(int $clientId, array $data): void
+    {
+        $room = $data['room'] ?? 'general';
+        $this->joinRoom($clientId, $room);
+        
+        $this->emit($clientId, 'room.joined', [
+            'room' => $room,
+            'message' => "You joined room: {$room}"
+        ]);
+    }
+
+    #[HttpRoute('GET', '/api/status')]
+    public function getStatus(Request $request): Response
+    {
+        return Response::json([
+            'status' => 'online',
+            'clients' => $this->getClientCount(),
+            'timestamp' => time()
+        ]);
+    }
+}
+

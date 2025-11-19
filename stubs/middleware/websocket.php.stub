@@ -1,0 +1,17 @@
+<?php
+
+namespace {{NAMESPACE}};
+
+use Sockeon\Sockeon\Contracts\WebSocket\WebsocketMiddleware;
+
+class {{MIDDLEWARE_NAME}} implements WebsocketMiddleware
+{
+    public function handle(int $clientId, string $event, array $data, callable $next, \Sockeon\Sockeon\Connection\Server $server)
+    {
+        // Add your middleware logic here
+        
+        // Call next middleware
+        return $next();
+    }
+}
+

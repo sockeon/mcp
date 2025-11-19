@@ -1,0 +1,5 @@
+        // Broadcast to all connected clients
+        $this->broadcast('{{EVENT_NAME}}', [
+            'data' => $data
+        ]);
+

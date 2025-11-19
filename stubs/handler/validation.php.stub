@@ -1,0 +1,13 @@
+        // Validate input
+        $validator = new Validator($data, [
+{{VALIDATION_RULES}}
+        ]);
+
+        if (!$validator->validate()) {
+            $this->emit($clientId, 'error', [
+                'errors' => $validator->getErrors()
+            ]);
+            return;
+        }
+
+

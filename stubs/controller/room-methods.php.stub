@@ -1,0 +1,32 @@
+
+    /**
+     * Handle room joining
+     */
+    #[SocketOn('room.join')]
+    public function handleRoomJoin(int $clientId, array $data): void
+    {
+        $room = $data['room'] ?? 'general';
+        
+        $this->joinRoom($clientId, $room);
+        
+        $this->emit($clientId, 'room.joined', [
+            'room' => $room,
+            'message' => "You joined room: {$room}"
+        ]);
+    }
+
+    /**
+     * Broadcast to room
+     */
+    #[SocketOn('room.message')]
+    public function handleRoomMessage(int $clientId, array $data): void
+    {
+        $room = $data['room'] ?? 'general';
+        $message = $data['message'] ?? '';
+        
+        $this->broadcastToRoomClients('room.message', [
+            'clientId' => $clientId,
+            'message' => $message
+        ], $room);
+    }
+

@@ -1,0 +1,6 @@
+        // Send response to client
+        $this->emit($clientId, '{{EVENT_NAME}}.response', [
+            'success' => true,
+            'data' => $data
+        ]);
+

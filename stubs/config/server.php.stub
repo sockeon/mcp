@@ -1,0 +1,6 @@
+<?php
+
+use Sockeon\Sockeon\Config\ServerConfig;
+
+$config = new ServerConfig({{CONFIG_ARRAY}});
+

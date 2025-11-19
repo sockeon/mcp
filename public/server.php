@@ -10,8 +10,8 @@ use Mcp\Server;
 use Mcp\Server\Transport\StdioTransport;
 
 $server = Server::builder()
-    ->setServerInfo('Sockeon MCP Development Server', '1.0.0')
-    ->setDiscovery(__DIR__ . '/../src' )
+    ->setServerInfo('Sockeon MCP Server', '1.0.0')
+    ->setDiscovery(__DIR__ . '/..', ['src'])
     ->setLogger(logger())
     ->setContainer(container())
     ->build();

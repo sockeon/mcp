@@ -1,0 +1,22 @@
+<?php
+
+namespace {{NAMESPACE}};
+
+use Sockeon\Sockeon\Contracts\WebSocket\HandshakeMiddleware;
+use Sockeon\Sockeon\WebSocket\HandshakeRequest;
+
+class {{MIDDLEWARE_NAME}} implements HandshakeMiddleware
+{
+    public function handle(int $clientId, HandshakeRequest $request, callable $next, \Sockeon\Sockeon\Connection\Server $server): bool|array
+    {
+        // Add your middleware logic here
+        
+        // Return true to allow, false or array to deny
+        // return true; // Allow connection
+        // return false; // Deny connection
+        // return ['error' => 'Custom error message']; // Deny with error
+        
+        return $next();
+    }
+}
+

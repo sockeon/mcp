@@ -1,0 +1,9 @@
+    /**
+     * Handle {{METHOD}} {{PATH}}
+     */
+    #[HttpRoute('{{METHOD}}', '{{PATH}}')]
+    public function {{METHOD_NAME}}(Request $request): Response
+    {
+{{PATH_PARAMS_CODE}}{{QUERY_PARAMS_CODE}}{{BODY_CODE}}{{RESPONSE_CODE}}
+    }
+

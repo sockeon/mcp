@@ -1,0 +1,6 @@
+        // Broadcast to specific namespace
+        $namespace = $data['namespace'] ?? '{{NAMESPACE_NAME}}';
+        $this->broadcastToNamespaceClients('{{EVENT_NAME}}', [
+            'data' => $data
+        ], $namespace);
+

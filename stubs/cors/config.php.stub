@@ -1,0 +1,11 @@
+<?php
+
+use Sockeon\Sockeon\Config\CorsConfig;
+
+$corsConfig = new CorsConfig({{CONFIG_ARRAY}});
+
+// Use in ServerConfig:
+// $config = new ServerConfig([
+//     'cors' => $corsConfig
+// ]);
+

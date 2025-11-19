@@ -1,0 +1,6 @@
+    #[SocketOn('{{EVENT_NAME}}')]
+    public function handle{{METHOD_NAME}}(int $clientId, array $data): void
+    {
+{{BROADCAST_CODE}}
+    }
+

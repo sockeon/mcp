@@ -1,0 +1,29 @@
+<?php
+
+require_once 'vendor/autoload.php';
+
+use Sockeon\Sockeon\Connection\WebSocketClient;
+
+// Create client instance
+$client = new WebSocketClient('{{HOST}}', {{PORT}}, '{{PATH}}', {{TIMEOUT}});
+
+// Connect to server
+$client->connect();
+
+// Listen for events
+$client->on('welcome', function (array $data) {
+    echo "Received welcome: " . json_encode($data) . "\n";
+});
+
+$client->on('chat.message', function (array $data) {
+    echo "Chat message: " . json_encode($data) . "\n";
+});
+
+// Emit events
+$client->emit('chat.message', [
+    'message' => 'Hello from client!'
+]);
+
+// Start listening (blocking)
+$client->listen();
+

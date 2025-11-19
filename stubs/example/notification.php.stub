@@ -1,0 +1,84 @@
+<?php
+
+namespace App\Controllers;
+
+use Sockeon\Sockeon\Controllers\SocketController;
+use Sockeon\Sockeon\Http\Attributes\HttpRoute;
+use Sockeon\Sockeon\Http\Request;
+use Sockeon\Sockeon\Http\Response;
+use Sockeon\Sockeon\WebSocket\Attributes\OnConnect;
+use Sockeon\Sockeon\WebSocket\Attributes\OnDisconnect;
+use Sockeon\Sockeon\WebSocket\Attributes\SocketOn;
+
+class NotificationController extends SocketController
+{
+    private array $userSubscriptions = [];
+
+    #[OnConnect]
+    public function onConnect(int $clientId): void
+    {
+        $this->emit($clientId, 'connected', [
+            'clientId' => $clientId
+        ]);
+    }
+
+    #[SocketOn('notifications.subscribe')]
+    public function subscribe(int $clientId, array $data): void
+    {
+        $userId = $data['userId'] ?? null;
+        $topics = $data['topics'] ?? [];
+
+        if (!$userId) {
+            $this->emit($clientId, 'error', ['message' => 'User ID required']);
+            return;
+        }
+
+        $this->userSubscriptions[$clientId] = [
+            'userId' => $userId,
+            'topics' => $topics
+        ];
+
+        $this->emit($clientId, 'notifications.subscribed', [
+            'topics' => $topics
+        ]);
+    }
+
+    #[HttpRoute('POST', '/api/notifications/send')]
+    public function sendNotification(Request $request): Response
+    {
+        $data = $request->all();
+        $topic = $data['topic'] ?? null;
+        $message = $data['message'] ?? null;
+
+        if (!$topic || !$message) {
+            return Response::json(['error' => 'Topic and message required'], 400);
+        }
+
+        $sentCount = 0;
+        foreach ($this->userSubscriptions as $clientId => $subscription) {
+            if (!in_array($topic, $subscription['topics'])) {
+                continue;
+            }
+
+            $this->emit($clientId, 'notification', [
+                'topic' => $topic,
+                'message' => $message,
+                'timestamp' => time()
+            ]);
+
+            $sentCount++;
+        }
+
+        return Response::json([
+            'success' => true,
+            'sent_to' => $sentCount
+        ]);
+    }
+
+    #[OnDisconnect]
+    public function onDisconnect(int $clientId): void
+    {
+        unset($this->userSubscriptions[$clientId]);
+    }
+}
+

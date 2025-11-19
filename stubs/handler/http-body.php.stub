@@ -1,0 +1,8 @@
+
+        // Get request body
+        $data = $request->all();
+        
+        if (empty($data)) {
+            return Response::json(['error' => 'Request body is required'], 400);
+        }
+
