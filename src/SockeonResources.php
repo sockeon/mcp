@@ -282,6 +282,17 @@ final class SockeonResources
     }
 
     #[McpResource(
+        uri: 'sockeon://docs/advanced/reverse-proxy-load-balancing',
+        name: 'Reverse-Proxy-and-Load-Balancing',
+        description: 'Complete guide to reverse proxy and load balancing configuration',
+        mimeType: 'text/markdown'
+    )]
+    public function getReverseProxyGuide(): string
+    {
+        return $this->readDoc('advanced/reverse-proxy-load-balancing.md');
+    }
+
+    #[McpResource(
         uri: 'sockeon://docs/api/response',
         name: 'Response-API-Reference',
         description: 'Complete Response API reference',

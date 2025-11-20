@@ -120,6 +120,9 @@ final class SockeonTools
         ?array $corsHeaders = null,
         ?string $authKey = null,
         ?array $rateLimit = null,
+        bool|array|null $trustProxy = null,
+        ?array $proxyHeaders = null,
+        ?string $healthCheckPath = null,
     ): string {
         $config = [
             'host' => $host,
@@ -147,6 +150,19 @@ final class SockeonTools
 
         if ($rateLimit !== null) {
             $config['rate_limit'] = $rateLimit;
+        }
+
+        // Reverse proxy and load balancing configuration
+        if ($trustProxy !== null) {
+            $config['trust_proxy'] = $trustProxy;
+        }
+
+        if ($proxyHeaders !== null) {
+            $config['proxy_headers'] = $proxyHeaders;
+        }
+
+        if ($healthCheckPath !== null) {
+            $config['health_check_path'] = $healthCheckPath;
         }
 
         $configStr = var_export($config, true);
@@ -316,6 +332,7 @@ final class SockeonTools
             'rate-limiting' => 'Rate Limiting - Protect your server from abuse',
             'logging' => 'Logging - PSR-3 compliant logging system',
             'error-handling' => 'Error Handling - Comprehensive error handling',
+            'reverse-proxy-load-balancing' => 'Reverse Proxy and Load Balancing - Configure nginx, trust_proxy, and proxy headers',
         ];
 
         if ($topic !== null && isset($topics[$topic])) {
@@ -338,6 +355,9 @@ final class SockeonTools
         $output .= "- Middleware support for authentication\n";
         $output .= "- Built-in validation and sanitization\n";
         $output .= "- Rate limiting protection\n";
+        $output .= "- Reverse proxy and load balancing support (trust_proxy, proxy headers)\n";
+        $output .= "- Proxy-aware request methods (getIpAddress, getScheme, getHost, getPort)\n";
+        $output .= "- Health check endpoint for load balancers\n";
         $output .= "- PSR-3 logging\n";
         $output .= "- Zero dependencies (PHP core only)\n";
 
@@ -583,6 +603,57 @@ final class SockeonTools
         return $this->stubLoader->load('logging/custom.php.stub', [
             'NAMESPACE' => $namespace,
             'LOGGER_NAME' => $loggerName,
+        ]);
+    }
+
+    #[McpTool(
+        name: 'sockeon_generate_reverse_proxy_config',
+        description: 'Generate reverse proxy and load balancing configuration for nginx',
+    )]
+    public function generateReverseProxyConfig(
+        string $domain = 'example.com',
+        int $backendPort = 6001,
+        string $backendHost = '127.0.0.1',
+        bool $enableSsl = true,
+        ?string $sslCertPath = null,
+        ?string $sslKeyPath = null,
+        bool $redirectHttpToHttps = true,
+    ): string {
+        // Build SSL configuration
+        $sslConfig = '';
+        if ($enableSsl) {
+            $certPath = $sslCertPath ?? "/etc/letsencrypt/live/{$domain}/fullchain.pem";
+            $keyPath = $sslKeyPath ?? "/etc/letsencrypt/live/{$domain}/privkey.pem";
+            
+            $sslConfig = "    # SSL Certificate Configuration
+    ssl_certificate {$certPath};
+    ssl_certificate_key {$keyPath};
+
+    # Modern SSL configuration
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_ciphers 'ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384';
+    ssl_prefer_server_ciphers off;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 10m;
+";
+        }
+
+        // Build HTTP to HTTPS redirect
+        $httpRedirect = '';
+        if ($enableSsl && $redirectHttpToHttps) {
+            $httpRedirect = $this->stubLoader->load('config/nginx-http-redirect.conf.stub', [
+                'DOMAIN' => $domain,
+            ]);
+        }
+
+        $listenDirective = $enableSsl ? '443 ssl http2' : '80';
+        
+        return $httpRedirect . $this->stubLoader->load('config/nginx-reverse-proxy.conf.stub', [
+            'DOMAIN' => $domain,
+            'BACKEND_HOST' => $backendHost,
+            'BACKEND_PORT' => (string)$backendPort,
+            'LISTEN_DIRECTIVE' => $listenDirective,
+            'SSL_CONFIG' => $sslConfig,
         ]);
     }
 }
