@@ -3,6 +3,8 @@
 namespace {{NAMESPACE}};
 
 use Sockeon\Sockeon\Contracts\LoggerInterface;
+use Sockeon\Sockeon\Logging\LogLevel;
+use Throwable;
 
 class {{LOGGER_NAME}} implements LoggerInterface
 {
@@ -46,7 +48,15 @@ class {{LOGGER_NAME}} implements LoggerInterface
         $this->log('debug', $message, $context);
     }
 
-    private function log(string $level, string $message, array $context = []): void
+    public function exception(Throwable $exception, array $context = [], string $level = LogLevel::ERROR): void
+    {
+        $this->log($level, $exception->getMessage(), array_merge($context, [
+            'exception' => get_class($exception),
+            'trace' => $exception->getTraceAsString(),
+        ]));
+    }
+
+    public function log(string $level, string $message, array $context = []): void
     {
         $timestamp = date('Y-m-d H:i:s');
         $contextStr = !empty($context) ? ' ' . json_encode($context) : '';

@@ -1,11 +1,13 @@
-        // Validate input
-        $validator = new Validator($data, [
+        // Validate payload using Sockeon validator rules.
+        $validator = new Validator();
+        try {
+            $validator->validate($data, [
 {{VALIDATION_RULES}}
-        ]);
-
-        if (!$validator->validate()) {
+            ]);
+        } catch (ValidationException $exception) {
             $this->emit($clientId, 'error', [
-                'errors' => $validator->getErrors()
+                'message' => 'Validation failed',
+                'errors' => $exception->getErrors()
             ]);
             return;
         }

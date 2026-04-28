@@ -3,11 +3,12 @@
 namespace {{NAMESPACE}};
 
 use Sockeon\Sockeon\Contracts\WebSocket\HandshakeMiddleware;
+use Sockeon\Sockeon\Connection\Server;
 use Sockeon\Sockeon\WebSocket\HandshakeRequest;
 
 class {{MIDDLEWARE_NAME}} implements HandshakeMiddleware
 {
-    public function handle(int $clientId, HandshakeRequest $request, callable $next, \Sockeon\Sockeon\Connection\Server $server): bool|array
+    public function handle(string $clientId, HandshakeRequest $request, callable $next, Server $server): mixed
     {
         // Add your middleware logic here
         

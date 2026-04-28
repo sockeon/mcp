@@ -1,16 +1,18 @@
 use Sockeon\Sockeon\Validation\Validator;
+use Sockeon\Sockeon\Exception\Validation\ValidationException;
 
 #[SocketOn('user.register')]
-public function handleUserRegister(int $clientId, array $data): void
+public function handleUserRegister(string $clientId, array $data): void
 {
-    $validator = new Validator($data, [
-        'name' => ['required','string'],
-        'email' => ['required', 'email'],
-    ]);
-
-    if (!$validator->validate()) {
+    $validator = new Validator();
+    try {
+        $validator->validate($data, [
+            'name' => ['required', 'string'],
+            'email' => ['required', 'email'],
+        ]);
+    } catch (ValidationException $exception) {
         $this->emit($clientId, 'error', [
-            'errors' => $validator->getErrors()
+            'errors' => $exception->getErrors()
         ]);
         return;
     }

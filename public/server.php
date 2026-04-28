@@ -4,18 +4,14 @@
 declare(strict_types=1);
 
 require_once __DIR__ . '/../vendor/autoload.php';
-require_once __DIR__ . '/bootstrap.php';
-
-use Mcp\Server;
 use Mcp\Server\Transport\StdioTransport;
-
-$server = Server::builder()
-    ->setServerInfo('Sockeon MCP Server', '1.0.0')
-    ->setDiscovery(__DIR__ . '/..', ['src'])
-    ->setLogger(logger())
-    ->setContainer(container())
-    ->build();
+use Sockeon\Mcp\Foundation\McpApplication;
 
 $transport = new StdioTransport();
+$app = new McpApplication(
+    projectRoot: __DIR__ . '/..',
+    debug: (bool) ($_SERVER['DEBUG'] ?? false),
+    fileLog: (bool) ($_SERVER['FILE_LOG'] ?? false),
+);
 
-$server->run($transport);
+$app->server()->run($transport);

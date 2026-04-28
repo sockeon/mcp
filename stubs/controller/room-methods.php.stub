@@ -3,7 +3,7 @@
      * Handle room joining
      */
     #[SocketOn('room.join')]
-    public function handleRoomJoin(int $clientId, array $data): void
+    public function handleRoomJoin(string $clientId, array $data): void
     {
         $room = $data['room'] ?? 'general';
         
@@ -19,7 +19,7 @@
      * Broadcast to room
      */
     #[SocketOn('room.message')]
-    public function handleRoomMessage(int $clientId, array $data): void
+    public function handleRoomMessage(string $clientId, array $data): void
     {
         $room = $data['room'] ?? 'general';
         $message = $data['message'] ?? '';

@@ -3,23 +3,19 @@
 namespace {{NAMESPACE}};
 
 use Sockeon\Sockeon\Contracts\WebSocket\HandshakeMiddleware;
+use Sockeon\Sockeon\Connection\Server;
+use Sockeon\Sockeon\Core\Config;
 use Sockeon\Sockeon\WebSocket\HandshakeRequest;
 
 class {{MIDDLEWARE_NAME}} implements HandshakeMiddleware
 {
-    private string $authKey;
-
-    public function __construct(string $authKey)
-    {
-        $this->authKey = $authKey;
-    }
-
-    public function handle(int $clientId, HandshakeRequest $request, callable $next, \Sockeon\Sockeon\Connection\Server $server): bool|array
+    public function handle(string $clientId, HandshakeRequest $request, callable $next, Server $server): mixed
     {
         $queryParams = $request->getQueryParams();
         $providedKey = $queryParams['key'] ?? null;
+        $expectedKey = Config::getAuthKey();
 
-        if ($providedKey !== $this->authKey) {
+        if (!is_string($expectedKey) || $expectedKey === '' || $providedKey !== $expectedKey) {
             return [
                 'error' => 'Authentication failed',
                 'code' => 401

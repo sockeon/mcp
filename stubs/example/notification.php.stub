@@ -15,7 +15,7 @@ class NotificationController extends SocketController
     private array $userSubscriptions = [];
 
     #[OnConnect]
-    public function onConnect(int $clientId): void
+    public function onConnect(string $clientId): void
     {
         $this->emit($clientId, 'connected', [
             'clientId' => $clientId
@@ -23,7 +23,7 @@ class NotificationController extends SocketController
     }
 
     #[SocketOn('notifications.subscribe')]
-    public function subscribe(int $clientId, array $data): void
+    public function subscribe(string $clientId, array $data): void
     {
         $userId = $data['userId'] ?? null;
         $topics = $data['topics'] ?? [];
@@ -76,7 +76,7 @@ class NotificationController extends SocketController
     }
 
     #[OnDisconnect]
-    public function onDisconnect(int $clientId): void
+    public function onDisconnect(string $clientId): void
     {
         unset($this->userSubscriptions[$clientId]);
     }

@@ -10,7 +10,7 @@ use Sockeon\Sockeon\WebSocket\Attributes\SocketOn;
 class GameController extends SocketController
 {
     #[OnConnect]
-    public function onConnect(int $clientId): void
+    public function onConnect(string $clientId): void
     {
         $this->moveClientToNamespace($clientId, '/game');
         $this->joinRoom($clientId, 'lobby', '/game');
@@ -22,7 +22,7 @@ class GameController extends SocketController
     }
 
     #[SocketOn('game.create')]
-    public function createGame(int $clientId, array $data): void
+    public function createGame(string $clientId, array $data): void
     {
         $gameId = uniqid('game_');
         
@@ -41,7 +41,7 @@ class GameController extends SocketController
     }
 
     #[SocketOn('game.join')]
-    public function joinGame(int $clientId, array $data): void
+    public function joinGame(string $clientId, array $data): void
     {
         $gameId = $data['gameId'] ?? null;
         
@@ -64,7 +64,7 @@ class GameController extends SocketController
     }
 
     #[OnDisconnect]
-    public function onDisconnect(int $clientId): void
+    public function onDisconnect(string $clientId): void
     {
         $this->broadcast('player.disconnected', [
             'playerId' => $clientId

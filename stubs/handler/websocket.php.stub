@@ -1,8 +1,9 @@
     /**
      * Handle {{EVENT_NAME}} WebSocket event
      */
+{{VALIDATION_IMPORT_HINTS}}
     #[SocketOn('{{EVENT_NAME}}')]
-    public function handle{{METHOD_NAME}}(int $clientId, array $data): void
+    public function handle{{METHOD_NAME}}(string $clientId, array $data): void
     {
 {{VALIDATION_CODE}}
 {{BROADCAST_CODE}}

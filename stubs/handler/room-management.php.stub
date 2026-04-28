@@ -1,5 +1,5 @@
     #[SocketOn('{{PREFIX}}.join')]
-    public function handleRoomJoin(int $clientId, array $data): void
+    public function handleRoomJoin(string $clientId, array $data): void
     {
         $room = $data['room'] ?? 'general';
         $namespace = $data['namespace'] ?? '/';
@@ -20,7 +20,7 @@
     }
 
     #[SocketOn('{{PREFIX}}.leave')]
-    public function handleRoomLeave(int $clientId, array $data): void
+    public function handleRoomLeave(string $clientId, array $data): void
     {
         $room = $data['room'] ?? 'general';
         $namespace = $data['namespace'] ?? '/';
@@ -41,7 +41,7 @@
     }
 
     #[SocketOn('{{PREFIX}}.list')]
-    public function handleRoomList(int $clientId, array $data): void
+    public function handleRoomList(string $clientId, array $data): void
     {
         $namespace = $data['namespace'] ?? '/';
         $rooms = $this->getRooms($namespace);

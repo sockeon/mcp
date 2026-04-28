@@ -1,5 +1,5 @@
     #[SocketOn('namespace.join')]
-    public function handleNamespaceJoin(int $clientId, array $data): void
+    public function handleNamespaceJoin(string $clientId, array $data): void
     {
         $namespace = $data['namespace'] ?? '/';
         

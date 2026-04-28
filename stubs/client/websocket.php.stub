@@ -24,6 +24,6 @@ $client->emit('chat.message', [
     'message' => 'Hello from client!'
 ]);
 
-// Start listening (blocking)
-$client->listen();
+// Start event loop (blocking)
+$client->run();
 

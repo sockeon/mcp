@@ -3,10 +3,11 @@
 namespace {{NAMESPACE}};
 
 use Sockeon\Sockeon\Contracts\WebSocket\WebsocketMiddleware;
+use Sockeon\Sockeon\Connection\Server;
 
 class {{MIDDLEWARE_NAME}} implements WebsocketMiddleware
 {
-    public function handle(int $clientId, string $event, array $data, callable $next, \Sockeon\Sockeon\Connection\Server $server)
+    public function handle(string $clientId, string $event, array $data, callable $next, Server $server): mixed
     {
         // Add your middleware logic here
         

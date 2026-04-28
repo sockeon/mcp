@@ -3,12 +3,13 @@
 namespace {{NAMESPACE}};
 
 use Sockeon\Sockeon\Contracts\Http\HttpMiddleware;
+use Sockeon\Sockeon\Connection\Server;
 use Sockeon\Sockeon\Http\Request;
 use Sockeon\Sockeon\Http\Response;
 
 class {{MIDDLEWARE_NAME}} implements HttpMiddleware
 {
-    public function handle(Request $request, callable $next, \Sockeon\Sockeon\Connection\Server $server)
+    public function handle(Request $request, callable $next, Server $server): mixed
     {
         $token = $request->getHeader('Authorization');
         

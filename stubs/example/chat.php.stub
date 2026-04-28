@@ -13,7 +13,7 @@ use Sockeon\Sockeon\WebSocket\Attributes\SocketOn;
 class ChatController extends SocketController
 {
     #[OnConnect]
-    public function onConnect(int $clientId): void
+    public function onConnect(string $clientId): void
     {
         $this->emit($clientId, 'welcome', [
             'message' => 'Welcome to the chat!',
@@ -27,7 +27,7 @@ class ChatController extends SocketController
     }
 
     #[OnDisconnect]
-    public function onDisconnect(int $clientId): void
+    public function onDisconnect(string $clientId): void
     {
         $this->broadcast('user.left', [
             'clientId' => $clientId,
@@ -36,7 +36,7 @@ class ChatController extends SocketController
     }
 
     #[SocketOn('chat.message')]
-    public function handleChatMessage(int $clientId, array $data): void
+    public function handleChatMessage(string $clientId, array $data): void
     {
         if (empty($data['message'])) {
             $this->emit($clientId, 'error', ['message' => 'Message cannot be empty']);
@@ -51,7 +51,7 @@ class ChatController extends SocketController
     }
 
     #[SocketOn('room.join')]
-    public function handleRoomJoin(int $clientId, array $data): void
+    public function handleRoomJoin(string $clientId, array $data): void
     {
         $room = $data['room'] ?? 'general';
         $this->joinRoom($clientId, $room);

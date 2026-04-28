@@ -1,5 +1,5 @@
     #[SocketOn('error')]
-    public function handleError(int $clientId, array $data): void
+    public function handleError(string $clientId, array $data): void
     {
         $error = $data['error'] ?? 'Unknown error';
         $code = $data['code'] ?? 500;
