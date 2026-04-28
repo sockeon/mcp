@@ -32,22 +32,22 @@ php public/server.php
 
 ### Tools (modular)
 
-- `sockeon.scaffold.server`
-- `sockeon.scaffold.controller`
-- `sockeon.scaffold.example`
-- `sockeon.config.server`
-- `sockeon.config.rate_limit`
-- `sockeon.config.cors`
-- `sockeon.config.reverse_proxy`
-- `sockeon.realtime.websocket_handler`
-- `sockeon.realtime.http_route`
-- `sockeon.realtime.room_management`
-- `sockeon.realtime.namespace_management`
-- `sockeon.security.validation_rules`
-- `sockeon.security.middleware`
-- `sockeon.security.authentication`
-- `sockeon.observability.error_handler`
-- `sockeon.observability.logging_setup`
+- `sockeon_scaffold_server`
+- `sockeon_scaffold_controller`
+- `sockeon_scaffold_example`
+- `sockeon_config_server`
+- `sockeon_config_rate_limit`
+- `sockeon_config_cors`
+- `sockeon_config_reverse_proxy`
+- `sockeon_realtime_websocket_handler`
+- `sockeon_realtime_http_route`
+- `sockeon_realtime_room_management`
+- `sockeon_realtime_namespace_management`
+- `sockeon_security_validation_rules`
+- `sockeon_security_middleware`
+- `sockeon_security_authentication`
+- `sockeon_observability_error_handler`
+- `sockeon_observability_logging_setup`
 
 ### Resources
 

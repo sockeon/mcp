@@ -15,7 +15,7 @@ final class ScaffoldTools
     }
 
     #[McpTool(
-        name: 'sockeon.scaffold.server',
+        name: 'sockeon_scaffold_server',
         description: 'Generate a complete Sockeon server bootstrap with optional controller registration',
     )]
     public function scaffoldServer(
@@ -28,7 +28,7 @@ final class ScaffoldTools
     }
 
     #[McpTool(
-        name: 'sockeon.scaffold.controller',
+        name: 'sockeon_scaffold_controller',
         description: 'Generate Sockeon controller boilerplate with optional websocket/http/room handlers',
     )]
     public function scaffoldController(
@@ -46,7 +46,7 @@ final class ScaffoldTools
     }
 
     #[McpTool(
-        name: 'sockeon.scaffold.example',
+        name: 'sockeon_scaffold_example',
         description: 'Generate a complete example application (chat, game, api, notification)',
     )]
     public function scaffoldExample(string $exampleType = 'chat'): string

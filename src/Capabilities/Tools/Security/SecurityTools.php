@@ -17,7 +17,7 @@ final class SecurityTools
     }
 
     #[McpTool(
-        name: 'sockeon.security.validation_rules',
+        name: 'sockeon_security_validation_rules',
         description: 'List all Sockeon validation rules and descriptions',
     )]
     public function listValidationRules(): array
@@ -26,7 +26,7 @@ final class SecurityTools
     }
 
     #[McpTool(
-        name: 'sockeon.security.middleware',
+        name: 'sockeon_security_middleware',
         description: 'Generate middleware class for http, websocket, or handshake context',
     )]
     public function generateMiddleware(
@@ -37,7 +37,7 @@ final class SecurityTools
     }
 
     #[McpTool(
-        name: 'sockeon.security.authentication',
+        name: 'sockeon_security_authentication',
         description: 'Generate authentication middleware using key or token flow',
     )]
     public function generateAuthentication(string $authType = 'key'): string
@@ -46,7 +46,7 @@ final class SecurityTools
     }
 
     #[McpTool(
-        name: 'sockeon.security.validation_example',
+        name: 'sockeon_security_validation_example',
         description: 'Generate validation snippet for websocket handlers using framework validator',
     )]
     public function generateValidationExample(): string

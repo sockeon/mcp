@@ -15,7 +15,7 @@ final class ConfigTools
     }
 
     #[McpTool(
-        name: 'sockeon.config.server',
+        name: 'sockeon_config_server',
         description: 'Generate Sockeon server config array with optional CORS/auth/rate limiting',
     )]
     public function generateServerConfig(
@@ -66,7 +66,7 @@ final class ConfigTools
     }
 
     #[McpTool(
-        name: 'sockeon.config.rate_limit',
+        name: 'sockeon_config_rate_limit',
         description: 'Generate rate limiting configuration for HTTP and WebSocket traffic',
     )]
     public function generateRateLimitConfig(
@@ -100,7 +100,7 @@ final class ConfigTools
     }
 
     #[McpTool(
-        name: 'sockeon.config.cors',
+        name: 'sockeon_config_cors',
         description: 'Generate complete CORS configuration with origins/methods/headers',
     )]
     public function generateCorsConfig(
@@ -122,7 +122,7 @@ final class ConfigTools
     }
 
     #[McpTool(
-        name: 'sockeon.config.reverse_proxy',
+        name: 'sockeon_config_reverse_proxy',
         description: 'Generate nginx reverse proxy configuration for Sockeon deployments',
     )]
     public function generateReverseProxyConfig(

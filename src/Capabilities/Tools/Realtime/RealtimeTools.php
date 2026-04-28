@@ -15,7 +15,7 @@ final class RealtimeTools
     }
 
     #[McpTool(
-        name: 'sockeon.realtime.websocket_handler',
+        name: 'sockeon_realtime_websocket_handler',
         description: 'Generate WebSocket event handler with optional validation and broadcast behavior',
     )]
     public function generateWebSocketHandler(
@@ -28,7 +28,7 @@ final class RealtimeTools
     }
 
     #[McpTool(
-        name: 'sockeon.realtime.http_route',
+        name: 'sockeon_realtime_http_route',
         description: 'Generate an HTTP route handler for Sockeon controller',
     )]
     public function generateHttpRoute(
@@ -40,7 +40,7 @@ final class RealtimeTools
     }
 
     #[McpTool(
-        name: 'sockeon.realtime.room_management',
+        name: 'sockeon_realtime_room_management',
         description: 'Generate room join and leave handler boilerplate',
     )]
     public function generateRoomManagement(string $eventPrefix = 'room'): string
@@ -49,7 +49,7 @@ final class RealtimeTools
     }
 
     #[McpTool(
-        name: 'sockeon.realtime.namespace_management',
+        name: 'sockeon_realtime_namespace_management',
         description: 'Generate namespace management handler boilerplate',
     )]
     public function generateNamespaceManagement(): string
@@ -58,7 +58,7 @@ final class RealtimeTools
     }
 
     #[McpTool(
-        name: 'sockeon.realtime.broadcast_handler',
+        name: 'sockeon_realtime_broadcast_handler',
         description: 'Generate dedicated broadcast handler for all, room, or namespace targets',
     )]
     public function generateBroadcastHandler(
@@ -70,7 +70,7 @@ final class RealtimeTools
     }
 
     #[McpTool(
-        name: 'sockeon.realtime.websocket_client',
+        name: 'sockeon_realtime_websocket_client',
         description: 'Generate PHP WebSocket client code for Sockeon server',
     )]
     public function generateWebSocketClient(

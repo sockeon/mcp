@@ -15,7 +15,7 @@ final class ObservabilityTools
     }
 
     #[McpTool(
-        name: 'sockeon.observability.error_handler',
+        name: 'sockeon_observability_error_handler',
         description: 'Generate controller-level error handling boilerplate',
     )]
     public function generateErrorHandler(): string
@@ -24,7 +24,7 @@ final class ObservabilityTools
     }
 
     #[McpTool(
-        name: 'sockeon.observability.logging_setup',
+        name: 'sockeon_observability_logging_setup',
         description: 'Generate custom logger class setup',
     )]
     public function generateLoggingSetup(): string
