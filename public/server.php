@@ -28,9 +28,11 @@ use Mcp\Server\Transport\StdioTransport;
 use Sockeon\Mcp\Foundation\McpApplication;
 
 $transport = new StdioTransport();
+$packageRoot = dirname(__DIR__);
 $projectRoot = getcwd() ?: dirname(__DIR__, 4);
 $app = new McpApplication(
     projectRoot: $projectRoot,
+    packageRoot: $packageRoot,
     debug: (bool) ($_SERVER['DEBUG'] ?? false),
     fileLog: (bool) ($_SERVER['FILE_LOG'] ?? false),
 );

@@ -13,6 +13,7 @@ final class McpApplication
 
     public function __construct(
         private readonly string $projectRoot,
+        private readonly string $packageRoot,
         private readonly bool $debug = false,
         private readonly bool $fileLog = false,
     ) {
@@ -24,9 +25,10 @@ final class McpApplication
         $container = ContainerFactory::create($this->logger);
 
         return ServerFactory::create(
-            projectRoot: $this->projectRoot,
-            container: $container,
-            logger: $this->logger,
+            $this->projectRoot,
+            $this->packageRoot,
+            $container,
+            $this->logger,
         );
     }
 }

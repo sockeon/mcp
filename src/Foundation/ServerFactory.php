@@ -12,6 +12,7 @@ final class ServerFactory
 {
     public static function create(
         string $projectRoot,
+        string $packageRoot,
         Container $container,
         LoggerInterface $logger,
         string $name = 'Sockeon MCP Server',
@@ -19,7 +20,7 @@ final class ServerFactory
     ): Server {
         return Server::builder()
             ->setServerInfo($name, $version)
-            ->setDiscovery($projectRoot, ['src/Capabilities'])
+            ->setDiscovery($packageRoot, ['src/Capabilities'])
             ->setLogger($logger)
             ->setContainer($container)
             ->build();
